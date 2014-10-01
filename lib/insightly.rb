@@ -22,10 +22,8 @@ module Insightly
 
   # @return [Logger]
   def logger
-    if @logger.blank?
-      @logger = Logger.new(STDOUT)
-      RestClient.log = @logger
-    end
+    @logger ||= Logger.new(STDOUT)
+    RestClient.log = @logger
     @logger
   end
 end
