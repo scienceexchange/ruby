@@ -1,4 +1,5 @@
 require 'insightly/version'
+require 'rest_client'
 
 module Insightly
   autoload :Client, 'insightly/client'
@@ -10,9 +11,6 @@ module Insightly
     attr_accessor :api_key
     # @return [Logger]
     attr_accessor :logger
-    def logger
-      @logger || Logger.new(STDOUT)
-    end
   end
 
   module_function
@@ -20,5 +18,12 @@ module Insightly
   # @return [Insightly::Client]
   def client
     @client ||= Client.new(Insightly.api_key)
+  end
+
+  # @return [Logger]
+  def logger
+    @logger ||= Logger.new(STDOUT)
+    RestClient.log = @logger
+    @logger
   end
 end

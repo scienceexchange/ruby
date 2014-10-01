@@ -9,6 +9,10 @@ describe Insightly do
     expect(Insightly).to respond_to(:api_key)
   end
 
+  it 'provides way to set logger' do
+    expect(Insightly).to respond_to(:logger)
+  end
+
   it 'provides shortcut for instantiating Client' do
     expect(Insightly.client).to be_a(Insightly::Client)
   end
