@@ -11,6 +11,7 @@ module Insightly2
     # @return [String]
     attr_accessor :api_key
     attr_accessor :logger
+    attr_accessor :stub
   end
 
   module_function

@@ -41,10 +41,16 @@ module Insightly2
       raise ArgumentError, "Unsupported method #{method.inspect}. Only :get, :post, :put, :delete are allowed" unless REQUESTS.include?(method)
 
       payload_logger_message = query.empty? ? "with no payload" : "with payload: #{query.inspect}"
-      logger_info_message = "INSIGHTLY starting [#{method.to_s}] request to [#{path.to_s}] #{payload_logger_message}"
+      stubbed_note = Insightly2.stub ? '[STUBBED]' : nil
+      logger_info_message = "#{stubbed_note} INSIGHTLY starting [#{method.to_s}] request to [#{path.to_s}] #{payload_logger_message}"
       LOGGER.info(logger_info_message)
 
       payload = !query.empty? ? JSON.generate(query) : ''
+
+      # Return if stub set to true.
+      return Faraday::Response.new(body: OpenStruct.new, status: "200") if Insightly2.stub
+
+      # The code below runs if Insightly2.stub is not set or set to false.
       response = @connection.run_request(method, "#{URL}#{path}", payload, headers)
 
       case response.status.to_i
